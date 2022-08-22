@@ -11,6 +11,7 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 client.commands = new Collection();
 client.commandArray = [];
 
+// Setup folder structure for commands
 const functionFolders = fs.readdirSync("./src/functions");
 for (const folder of functionFolders) {
   const functionFiles = fs
@@ -28,7 +29,7 @@ client.handleCommands();
 client.login(token);
 
 //respond to messages
-client.on("message", function (messages) {
+client.on("message", async (messages) {
   if (messages.content.toLocaleLowerCase() === "preacher")
     console.log(
       "```" + "what's good bitch" + "```" + " " + messages.author.username
@@ -38,7 +39,3 @@ client.on("message", function (messages) {
   );
 });
 
-client.on("message", function (messages) {
-  if (messages.content.toLocaleLowerCase() === "hello")
-    messages.channel.send("hello" + " " + messages.author.username);
-});
