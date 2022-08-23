@@ -1,6 +1,6 @@
 const { ChannelType, SystemChannelFlagsBitField } = require("discord.js");
 const fs = require("fs");
-const QuoteDB = fs.readFileSync(__dirname + "/../../data/quotes.json");
+var QuoteDB = fs.readFileSync(__dirname + "/../../data/quotes.json");
 
 module.exports = {
   name: "messageCreate",
@@ -87,6 +87,7 @@ function addQuoteToDB(qtArr) {
     "```";
 //   console.log(QuoteData);
   fs.writeFileSync(__dirname + "/../../data/quotes.json", JSON.stringify(QuoteData));
+  QuoteDB = fs.readFileSync(__dirname + "/../../data/quotes.json");
   return returnStr;
 }
 
