@@ -53,27 +53,40 @@ function addUserToDB(username, QuoteData) {
 //0add 1username 2quote (taken literally)
 function addQuoteToDB(qtArr) {
   var returnStr = "";
+  var entryArr = [];
   var entry = "";
   // load db
   QuoteData = JSON.parse(QuoteDB.toString());
 
   // check for user in db
-  console.log("DEBUG: qtArr for add: " + qtArr);
+  console.log("DEBUG: qtArr for add: " + qtArr[1]);
   var userLookupResults = checkForUser(qtArr[1]);
   var username = userLookupResults[1];
   var exists = userLookupResults[0];
   if (!exists) {
+    console.log("adding user to database");
     QuoteData = addUserToDB(username,QuoteData);
   }
   // add quote
-  entry = qtArr.slice(2, qtArr.length - 1).toString();
+  console.log("userlookup results: " + userLookupResults.toString());
+  entryArr = qtArr.slice(2, qtArr.length);
+
+
+  // put back whitespace
+  for (var i = 0; i < entryArr.length; i++) {
+    entry += entryArr[i];
+    if (i != entryArr.length - 1) entry += ' ';
+  }
+  
+  console.log("username:  " + username);
   QuoteData[username].quotes.push(entry);
   returnStr =
     "```successfully added: ```" +
     entry +
     `\`\`\`to ${username}'s gospel.` +
     "```";
-
+//   console.log(QuoteData);
+  fs.writeFileSync(__dirname + "/../../data/quotes.json", JSON.stringify(QuoteData));
   return returnStr;
 }
 
@@ -97,16 +110,19 @@ function getPreachCmd(str) {
 }
 
 function checkForUser(username) {
+    console.log("    searching for: " + username);
   var QuoteData = JSON.parse(QuoteDB.toString());
-  if (QuoteData.hasOwnProperty(username)) return true, username; 
+  if (QuoteData.hasOwnProperty(username)) return [true, username];
+   
   else {
-    console.log("DEBUG: DIDNT FIND FROM PROPERTY");
-    console.log(QuoteData);
+    console.log("    username couldn't be found in db: " + username);
+    // console.log("DEBUG: DIDNT FIND FROM PROPERTY");
+    // console.log(QuoteData);
     var namesakes = []
     for (var key of Object.keys(QuoteData)) {
-        console.log(key + "->" + QuoteData[key]);
+        // console.log(key + "->" + QuoteData[key]);
         namesakes = QuoteData[key.toString()].aliases;
-        console.log(namesakes);
+        // console.log(namesakes);
         for(var alias of namesakes) {
             if (alias === username) return [true, key.toString()];
         }
@@ -114,7 +130,7 @@ function checkForUser(username) {
 
   }
 
-  return false, "";
+  return [false, ""];
 }
 
 function getUserQuoteData(username) {
@@ -185,7 +201,7 @@ function startPreaching(message) {
     // may switch this to execution dictiory if more preach commands are used
     switch (preachArr[0]) {
       case "add":
-        if (preachArr[1] === alias)
+        if (preachArr[1] === "alias")
           quote = "this is going to be added later -andrew";
         else quote = addQuoteToDB(preachArr);
         break;
