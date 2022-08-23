@@ -1,11 +1,25 @@
 require("dotenv").config();
 // Require the necessary discord.js classes
 const { token } = process.env;
-const { Client, Collection, GatewayIntentBits } = require("discord.js");
+const {
+  Client,
+  Collection,
+  GatewayIntentBits,
+  Partials,
+} = require("discord.js");
 const fs = require("fs");
 const { ClientRequest } = require("http");
+
 // Create a new client instance
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const client = new Client({
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.DirectMessages,
+    GatewayIntentBits.MessageContent
+  ],
+  partials: [Partials.Channel],
+});
 
 // Setup client
 client.commands = new Collection();
@@ -27,15 +41,3 @@ client.handleCommands();
 
 // Login to Discord with your client's token
 client.login(token);
-
-//respond to messages
-client.on("message", async (messages) {
-  if (messages.content.toLocaleLowerCase() === "preacher")
-    console.log(
-      "```" + "what's good bitch" + "```" + " " + messages.author.username
-    );
-  messages.channel.send(
-    "```" + "what's good bitch" + "```" + " " + messages.author.username
-  );
-});
-
