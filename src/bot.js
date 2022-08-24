@@ -25,6 +25,7 @@ const client = new Client({
 client.commands = new Collection();
 client.commandArray = [];
 
+
 // Setup folder structure for commands
 const functionFolders = fs.readdirSync("./src/functions");
 for (const folder of functionFolders) {
