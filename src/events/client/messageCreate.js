@@ -97,7 +97,6 @@ function addQuoteToDB(qtArr) {
 
 function removeUserFromDB(username) {
   var QuoteData = JSON.parse(QuoteDB.toString());
-  console.log("DEBUG: username:  " + username);
 
   // check if user exists
   var userLookupResults = checkForUser(username);
@@ -123,15 +122,12 @@ function removeQuoteFromDB(qtArr) {
   var QuoteData = JSON.parse(QuoteDB.toString());
   // push qtArr for removal
   qtArr.shift();
-  console.log("DEBUG: qtArr: " + qtArr);
 
   // get username and check if it's valid
   var userLookupResults = checkForUser(qtArr[0]);
   var exists = userLookupResults[0];
   var username = userLookupResults[1];
   if (!exists) return "`User must exist in order to remove gospel from them`";
-
-  console.log("DEBUG username: " + username);
 
   var userData = QuoteData[username];
   console.log("    Pulling data from " + username + ": " + userData.quotes);
@@ -147,13 +143,7 @@ function removeQuoteFromDB(qtArr) {
   //remove the quote from the user's range
   var userQuotes = userData.quotes;
   console.log(userData.quotes);
-  console.log("DEBUG:     ");
-  console.log(
-    "        remove ID: " +
-      removeID +
-      "  quote to be removed" +
-      getQuoteFromUser(username, removeID)
-  );
+
   userQuotes.splice(removeID - 1, 1);
   console.log("        new quotes: " + userQuotes);
 
