@@ -1,6 +1,8 @@
-require("dotenv").config();
+// require("dotenv").config();
 // Require the necessary discord.js classes
-const { token } = process.env;
+// const { token } = process.env;
+const token = process.env.TOKEN;
+console.log("env = "  + process.env);
 const {
   Client,
   Collection,
@@ -35,6 +37,8 @@ for (const folder of functionFolders) {
   for (const file of functionFiles)
     require(`./functions/${folder}/${file}`)(client);
 }
+
+console.log("token: " + token);
 
 // start async processes
 client.handleEvents();

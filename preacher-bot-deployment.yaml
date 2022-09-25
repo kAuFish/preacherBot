@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: preacher-bot-deployment
+  namespace: discord-bots
+  labels:
+    app: node-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: preacher-bot
+  template:
+    metadata:
+      labels:
+        app: preacher-bot
+    spec:
+      containers:
+      - name: preacher-bot
+        image: kaufish/preacher-bot:latest
+        ports:
+        - containerPort: 3001
+      imagePullSecrets:
+      - name: regcred

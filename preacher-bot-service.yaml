@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: preacher-bot-service
+  namespace: discord-bots
+spec:
+  selector:
+    app: preacher-bot 
+  type: LoadBalancer
+  ports:
+  - protocol: TCP
+    port: 5000
+    targetPort: 3001
+    nodePort: 31111

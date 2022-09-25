@@ -1,3 +1,5 @@
 node_modules
 .env
 quotes2.json
+env.list
+runthis.txt
